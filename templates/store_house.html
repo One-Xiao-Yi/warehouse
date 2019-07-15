@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+</head>
+<body>
+    <h2 class="text-center">仓库库存</h2>
+    <div id="back_group" class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>货物名称</th>
+                        <th>数量</th>
+                        <th>进价</th>
+                        <th>售价</th>
+                        <th>过期时间</th>
+                        <th>售出</th>
+                    </tr>
+                </thead>
+            <div class="panel-group">
+                <tbody>
+                    {% for one in stock %}
+                        <tr>
+                            <td><a data-toggle="collapse" href="#{{ one.stock_id }}">{{ one.good.good_name }}</a></td>
+                            <td><input class="form-control" value="{{ one.surplus }}" readonly="readonly"></td>
+                            <td><input class="form-control" value="{{ one.good.purchase_price }}" readonly="readonly"></td>
+                            <td><input class="form-control" value="{{ one.retail_price }}" readonly="readonly"></td>
+                            <td>{{ one.expiration_date|date:"Y-m-d" }}</td>
+                            <td><button name="sell_btn" class="btn btn-danger">售出</button></td>
+                        </tr>
+                        <div id="{{ one.stock_id }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    生产日期：{{ one.date_of_manufacture|date:"Y-m-d" }}
+                                    保质期：{{ one.quality_gurantee_period }}天
+                                    累计进货量：{{ one.good.accumulate }}
+                                    供应商：{{ one.good.supplier.supplier_name }}
+                                    供应商电话：{{ one.good.supplier.phone_number }}
+                                    供应商邮箱：{{ one.good.supplier.email }}
+                                </div>
+                        </div>
+                    {% endfor %}
+                </tbody>
+            </div>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button id="add_good_btn" class="btn btn-info">添加货物</button>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div id="add_good" style="display: none">
+    <div name="good_add_text" class="row" style="margin-top: 30px;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="good_name" class="col-sm-2 control-label">货物名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="good_name">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="surplus" class="col-sm-2 control-label">进货数量</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="surplus">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div name="good_add_text" class="row" style="margin-top: 30px;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="retail_price" class="col-sm-2 control-label">进价</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="retail_price">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="purchase_price" class="col-sm-2 control-label">售价</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="purchase_price">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div name="good_add_text" class="row" style="margin-top: 30px;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="date_of_manufacture" class="col-sm-2 control-label">生产日期</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="date_of_manufacture">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="quality_gurantee_period" class="col-sm-2 control-label">保质期</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="quality_gurantee_period">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div name="good_add_text" class="row" style="margin-top: 30px;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="supplier_name" class="col-sm-2 control-label">供货商</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="supplier_name">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="phone_number" class="col-sm-2 control-label">联系电话</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="phone_number">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 30px">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            <button id="add_good_true" class="btn btn-info">保存</button>
+        </div>
+        <div class="col-md-3">
+            <button id="cancel" class="btn btn-info">取消</button>
+        </div>
+        <div class="col-md-3"></div>
+        </div>
+    </div>
+    </div>
+<script>
+
+    $("[name='sell_btn']").click(function () {
+        if($(this).text() == '售出')
+        {
+            $(this).text("保存")
+            let t = $(this).parent().parent().children()
+            for (var i=1;i<4;i++)
+            {
+                t[i].children[0].removeAttribute("readonly")
+            }
+        }else
+        {
+            let good_id = $(this).parent().parent().find('a').attr("href").toString()
+            let surplus = $(this).parent().parent().children().children()[1].value
+            let purchase_price = $(this).parent().parent().children().children()[2].value
+            let retail_price = $(this).parent().parent().children().children()[3].value
+            let btn = $(this)
+            let t = btn.parent().parent().children()
+            for (let i=0;i<4;i++)
+            {
+                t[i].children[0].setAttribute("readonly","readonly")
+            }
+            $.ajax(
+            {
+                url: /updategood/,
+                type: "POST",
+                data: JSON.stringify({"stock_id":good_id,"surplus":surplus,
+                "retail_price":retail_price,"purchase_price":purchase_price}),
+                success: function (data) {
+                    alert(data.msg)
+                    btn.text("编辑")
+                    window.location.reload()
+                }
+            })
+        }
+    })
+    
+    $("#add_good_btn").click(function () {
+        if($("#add_good").css("display") == 'none')
+        {
+            $("#add_good").css("display","block")
+        }else
+        {
+            $("#add_good").css("display","none")
+        }
+    })
+
+    $("#add_good_true").click(function () {
+        let good_name = $("#good_name").val()
+        let surplus = $("#surplus").val()
+        let purchase_price = $("#purchase_price").val()
+        let retail_price = $("#retail_price").val()
+        let date_of_manufacture = $("#date_of_manufacture").val()
+        let quality_gurantee_period = $("#quality_gurantee_period").val()
+        let supplier_name = $("#supplier_name").val()
+        let phone_number = $("#phone_number").val()
+        if(good_name != '' && surplus != ""
+            && purchase_price != "" && retail_price != ""
+            && date_of_manufacture != "" && quality_gurantee_period != ""
+            && supplier_name != "" && phone_number != "")
+        {
+            $.ajax(
+            {
+                url: /addgood/,
+                type: "POST",
+                data: JSON.stringify({"retail_price":retail_price,"surplus":surplus,
+                "date_of_manufacture":date_of_manufacture,
+                    "quality_gurantee_period":quality_gurantee_period,
+                    "good":{"good_name":good_name,"purchase_price":purchase_price,
+                    "supplier":{"supplier_name":supplier_name,"phone_number":phone_number}}}),
+                success: function (data) {
+                    alert(data.msg)
+                    $("#add_good").css("display","none")
+                    window.location.reload()
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>
